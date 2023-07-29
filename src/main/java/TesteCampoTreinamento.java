@@ -3,6 +3,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.By.ById;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -22,7 +23,6 @@ public class TesteCampoTreinamento {
 
 		driver.quit();
 	}
-
 	@Test
 	public void textAreaInteraction() {
 		WebDriver driver = new ChromeDriver();
@@ -35,7 +35,6 @@ public class TesteCampoTreinamento {
 
 		driver.quit();
 	}
-
 	@Test
 	public void radioButtonInteraction() {
 		WebDriver driver = new ChromeDriver();
@@ -47,7 +46,6 @@ public class TesteCampoTreinamento {
 
 		driver.quit();
 	}
-
 	@Test
 	public void checkBoxInteraction() {
 		WebDriver driver = new ChromeDriver();
@@ -59,7 +57,6 @@ public class TesteCampoTreinamento {
 
 		driver.quit();
 	}
-
 	@Test
 	public void dropdownInteraction() {
 		WebDriver driver = new ChromeDriver();
@@ -75,7 +72,6 @@ public class TesteCampoTreinamento {
 		Assert.assertEquals("Doutorado", combo.getFirstSelectedOption().getText());
 		driver.quit();
 	}
-
 	@Test
 	public void verifyValues() {
 		WebDriver driver = new ChromeDriver();
@@ -96,7 +92,6 @@ public class TesteCampoTreinamento {
 		}
 		Assert.assertTrue(encontrou);
 	}
-
 	@Test
 	public void multipleSelections() {
 		WebDriver driver = new ChromeDriver();
@@ -115,6 +110,17 @@ public class TesteCampoTreinamento {
 		combo.deselectByVisibleText("Corrida");
 		allSelectedOptions = combo.getAllSelectedOptions();
 		Assert.assertEquals(2, allSelectedOptions.size());
+		driver.quit();
+	}
+	@Test
+	public void buttonInteraction() {
+		WebDriver driver = new ChromeDriver();
+		
+		driver.manage().window().setSize(new Dimension(1024, 768));
+		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+		WebElement button = driver.findElement(By.id("buttonSimple"));
+		button.click();
+		Assert.assertEquals("Obrigado!" , button.getAttribute("value"));
 		driver.quit();
 	}
 }
