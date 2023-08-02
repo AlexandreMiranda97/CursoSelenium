@@ -3,7 +3,6 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.By.ById;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -15,7 +14,6 @@ public class TesteCampoTreinamento {
 	@Test
 	public void textFieldInteraction() {
 		WebDriver driver = new ChromeDriver();
-
 		driver.manage().window().setSize(new Dimension(1024, 768));
 		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
 		driver.findElement(By.id("elementosForm:nome")).sendKeys("Teste de escrita");
@@ -23,10 +21,10 @@ public class TesteCampoTreinamento {
 
 		driver.quit();
 	}
+
 	@Test
 	public void textAreaInteraction() {
 		WebDriver driver = new ChromeDriver();
-
 		driver.manage().window().setSize(new Dimension(1024, 768));
 		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
 		driver.findElement(By.id("elementosForm:sugestoes")).sendKeys("teste\n\n\n\nultima linha");
@@ -35,10 +33,10 @@ public class TesteCampoTreinamento {
 
 		driver.quit();
 	}
+
 	@Test
 	public void radioButtonInteraction() {
 		WebDriver driver = new ChromeDriver();
-
 		driver.manage().window().setSize(new Dimension(1024, 768));
 		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
 		driver.findElement(By.id("elementosForm:sexo:0")).click();
@@ -46,10 +44,10 @@ public class TesteCampoTreinamento {
 
 		driver.quit();
 	}
+
 	@Test
 	public void checkBoxInteraction() {
 		WebDriver driver = new ChromeDriver();
-
 		driver.manage().window().setSize(new Dimension(1024, 768));
 		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
 		driver.findElement(By.id("elementosForm:comidaFavorita:2")).click();
@@ -57,10 +55,10 @@ public class TesteCampoTreinamento {
 
 		driver.quit();
 	}
+
 	@Test
 	public void dropdownInteraction() {
 		WebDriver driver = new ChromeDriver();
-
 		driver.manage().window().setSize(new Dimension(1024, 768));
 		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
 		WebElement element = driver.findElement(By.id("elementosForm:escolaridade"));
@@ -72,10 +70,10 @@ public class TesteCampoTreinamento {
 		Assert.assertEquals("Doutorado", combo.getFirstSelectedOption().getText());
 		driver.quit();
 	}
+
 	@Test
 	public void verifyValues() {
 		WebDriver driver = new ChromeDriver();
-
 		driver.manage().window().setSize(new Dimension(1024, 768));
 		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
 		WebElement element = driver.findElement(By.id("elementosForm:escolaridade"));
@@ -91,11 +89,12 @@ public class TesteCampoTreinamento {
 			}
 		}
 		Assert.assertTrue(encontrou);
+		driver.quit();
 	}
+
 	@Test
 	public void multipleSelections() {
 		WebDriver driver = new ChromeDriver();
-
 		driver.manage().window().setSize(new Dimension(1024, 768));
 		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
 		WebElement element = driver.findElement(By.id("elementosForm:esportes"));
@@ -112,15 +111,43 @@ public class TesteCampoTreinamento {
 		Assert.assertEquals(2, allSelectedOptions.size());
 		driver.quit();
 	}
+
 	@Test
 	public void buttonInteraction() {
 		WebDriver driver = new ChromeDriver();
-		
 		driver.manage().window().setSize(new Dimension(1024, 768));
 		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
 		WebElement button = driver.findElement(By.id("buttonSimple"));
 		button.click();
-		Assert.assertEquals("Obrigado!" , button.getAttribute("value"));
+		Assert.assertEquals("Obrigado!", button.getAttribute("value"));
 		driver.quit();
+	}
+
+	@Test
+	public void backLink() {
+		WebDriver driver = new ChromeDriver();
+		driver.manage().window().setSize(new Dimension(1024, 768));
+		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+		driver.findElement(By.linkText("Voltar")).click();
+		Assert.assertEquals("Voltou!", driver.findElement(By.id("resultado")).getText());
+		driver.quit();
+	}
+
+	@Test
+	public void pageTextFind() {
+		WebDriver driver = new ChromeDriver();
+		driver.manage().window().setSize(new Dimension(1024, 768));
+		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+		Assert.assertEquals("Campo de Treinamento", driver.findElement(By.tagName("h3")).getText());
+		Assert.assertEquals("Cuidado onde clica, muitas armadilhas...",
+				driver.findElement(By.className("facilAchar")).getText());
+		driver.quit();
+	}
+
+	@Test
+	public void alert() {
+		WebDriver driver = new ChromeDriver();
+		driver.manage().window().setSize(new Dimension(1024, 768));
+		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
 	}
 }
