@@ -1,3 +1,5 @@
+import java.awt.Window;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.Alert;
@@ -42,6 +44,25 @@ public class TestFramesAndWindows {
 		driver.switchTo().window("");
 		driver.findElement(By.tagName("textarea")).sendKeys("Da Costa");
 		
-//		driver.quit();
+		driver.quit();
 	}
+	
+	@Test
+	public void popupTitlelessWindowInteraction() {
+		WebDriver driver = new ChromeDriver();
+		driver.manage().window().setPosition(new Point(0, 0));
+		driver.manage().window().setSize(new Dimension(1024, 768));
+		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+		
+		driver.findElement(By.id("buttonPopUpHard")).click();
+		System.out.println(driver.getWindowHandle());
+		System.out.println(driver.getWindowHandles());
+		driver.switchTo().window((String)driver.getWindowHandles().toArray()[1]);
+		driver.findElement(By.tagName("textarea")).sendKeys("Deu certo?");
+		driver.switchTo().window((String)driver.getWindowHandles().toArray()[0]);
+		driver.findElement(By.tagName("textarea")).sendKeys("E agora?");
+		driver.quit();		
+	}
+	
+	
 }
