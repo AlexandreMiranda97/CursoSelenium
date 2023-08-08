@@ -88,8 +88,7 @@ public class TestBusinessRules {
 		driver.findElement(By.id("elementosForm:sobrenome")).sendKeys("Miranda");
 		driver.findElement(By.id("elementosForm:sexo:0")).click();
 		driver.findElement(By.id("elementosForm:comidaFavorita:0")).click();
-		WebElement element = driver.findElement(By.id("elementosForm:esportes"));
-		Select combo = new Select(element);
+		Select combo = new Select(driver.findElement(By.id("elementosForm:esportes")));
 		combo.selectByVisibleText("Natacao");
 		combo.selectByVisibleText("O que eh esporte?");
 		driver.findElement(By.id("elementosForm:cadastrar")).click();
