@@ -15,6 +15,7 @@ import org.openqa.selenium.support.ui.Select;
 public class DryCodeTests {
 
 	private WebDriver driver;
+	private DSL dsl;
 
 	@Before
 	public void start() {
@@ -22,8 +23,9 @@ public class DryCodeTests {
 		driver.manage().window().setSize(new Dimension(1024, 768));
 		driver.manage().window().setPosition(new Point(0, 0));
 		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+		dsl = new DSL(driver);
 	}
-	
+
 	@After
 	public void finish() {
 		driver.quit();
@@ -31,37 +33,32 @@ public class DryCodeTests {
 
 	@Test
 	public void textFieldInteraction() {
-		driver.findElement(By.id("elementosForm:nome")).sendKeys("Teste de escrita");
-		Assert.assertEquals("Teste de escrita", driver.findElement(By.id("elementosForm:nome")).getAttribute("value"));
+		dsl.write("elementosForm:nome", "Alexandre Miranda");
+		Assert.assertEquals("Alexandre Miranda", dsl.getFieldValue("elementoForm:nome"));
 	}
 
 	@Test
 	public void textAreaInteraction() {
-		driver.findElement(By.id("elementosForm:sugestoes")).sendKeys("teste\n\n\n\nultima linha");
-		Assert.assertEquals("teste\n\n\n\nultima linha",
-				driver.findElement(By.id("elementosForm:sugestoes")).getAttribute("value"));
+		dsl.write("elementosForm:sugestoes", "teste\n\n\n\nultima linha");
+		Assert.assertEquals("teste\n\n\n\nultima linha", dsl.getFieldValue("elementosForm:sugestoes"));
 	}
 
 	@Test
 	public void radioButtonInteraction() {
-		driver.findElement(By.id("elementosForm:sexo:0")).click();
-		Assert.assertTrue(driver.findElement(By.id("elementosForm:sexo:0")).isSelected());
+		dsl.radioClick("elementosForm:sexo:0");
+		Assert.assertTrue(dsl.radioCheck("elementosForm:sexo:0"));
 	}
 
 	@Test
 	public void checkBoxInteraction() {
-		driver.findElement(By.id("elementosForm:comidaFavorita:2")).click();
-		Assert.assertTrue(driver.findElement(By.id("elementosForm:comidaFavorita:2")).isSelected());
+		dsl.radioClick("elementosForm:comidaFavorita:2");
+		Assert.assertTrue(dsl.radioCheck("elementosForm:comidaFavorita:2"));
 	}
 
 	@Test
 	public void dropdownInteraction() {
-		WebElement element = driver.findElement(By.id("elementosForm:escolaridade"));
-		Select combo = new Select(element);
-//		combo.selectByIndex(2);
-//		combo.selectByValue("superior");
-		combo.selectByVisibleText("Doutorado");
-		Assert.assertEquals("Doutorado", combo.getFirstSelectedOption().getText());
+		dsl.comboSelect("elementosForm:escolaridade", "Doutorado");
+		Assert.assertEquals("Doutorado", dsl.comboCheck("elementosForm:escolaridade"));
 	}
 
 	@Test
@@ -83,12 +80,12 @@ public class DryCodeTests {
 
 	@Test
 	public void multipleSelections() {
+		dsl.comboSelect("elementosForm:esportes", "Natacao");
+		dsl.comboSelect("elementosForm:esportes", "Corrida");
+		dsl.comboSelect("elementosForm:esportes", "Karate");
+
 		WebElement element = driver.findElement(By.id("elementosForm:esportes"));
 		Select combo = new Select(element);
-		combo.selectByVisibleText("Natacao");
-		combo.selectByVisibleText("Corrida");
-		combo.selectByVisibleText("Karate");
-
 		List<WebElement> allSelectedOptions = combo.getAllSelectedOptions();
 		Assert.assertEquals(3, allSelectedOptions.size());
 
@@ -99,21 +96,23 @@ public class DryCodeTests {
 
 	@Test
 	public void buttonInteraction() {
+		dsl.buttonClick("buttonSimple");
+
 		WebElement button = driver.findElement(By.id("buttonSimple"));
-		button.click();
 		Assert.assertEquals("Obrigado!", button.getAttribute("value"));
 	}
 
 	@Test
 	public void backLink() {
+		dsl.linkClick("Voltar");
+
 		driver.findElement(By.linkText("Voltar")).click();
-		Assert.assertEquals("Voltou!", driver.findElement(By.id("resultado")).getText());
+		Assert.assertEquals("Voltou!", dsl.checkText("resultado"));
 	}
 
 	@Test
 	public void pageTextFind() {
-		Assert.assertEquals("Campo de Treinamento", driver.findElement(By.tagName("h3")).getText());
-		Assert.assertEquals("Cuidado onde clica, muitas armadilhas...",
-				driver.findElement(By.className("facilAchar")).getText());
+		Assert.assertEquals("Campo de Treinamento", dsl.checkText(By.tagName("h3")));
+		Assert.assertEquals("Cuidado onde clica, muitas armadilhas...", dsl.checkText(By.className("facilAchar")));
 	}
 }

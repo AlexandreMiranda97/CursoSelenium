@@ -10,6 +10,9 @@ import org.openqa.selenium.support.ui.Select;
 
 public class TestBusinessRules {
 
+	private WebDriver driver;
+	private DSL dsl;
+	
 	@Test
 	public void nameMandatory() {
 		WebDriver driver = new ChromeDriver();
