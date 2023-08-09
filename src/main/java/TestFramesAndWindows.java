@@ -1,5 +1,3 @@
-import java.awt.Window;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.Alert;
