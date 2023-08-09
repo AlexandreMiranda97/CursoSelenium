@@ -18,6 +18,7 @@ public class DSL {
 	/********************** TextField & TextArea **********************/
 
 	public void write(By by, String text) {
+		driver.findElement(by).clear();
 		driver.findElement(by).sendKeys(text);
 	}
 
@@ -61,14 +62,14 @@ public class DSL {
 		combo.deselectByVisibleText(value);
 	}
 
-	public String comboCheck(String id) {
+	public String getComboSelected(String id) {
 		WebElement element = driver.findElement(By.id(id));
 		Select combo = new Select(element);
 		return combo.getFirstSelectedOption().getText();
 	}
 
-	public List<String> comboCheckSelected(String id) {
-		WebElement element = driver.findElement(By.id(id));
+	public List<String> getComboValues(String id) {
+		WebElement element = driver.findElement(By.id("elementosForm:esportes"));
 		Select combo = new Select(element);
 		List<WebElement> allSelectedOptions = combo.getAllSelectedOptions();
 		List<String> values = new ArrayList<String>();
@@ -78,14 +79,14 @@ public class DSL {
 		return values;
 	}
 
-	public int comboCheckValues(String id) {
+	public int getComboQuantity(String id) {
 		WebElement element = driver.findElement(By.id(id));
 		Select combo = new Select(element);
 		List<WebElement> options = combo.getOptions();
 		return options.size();
 	}
 
-	public boolean comboOptionsVerify(String id, String opcao) {
+	public boolean comboOptionVerify(String id, String opcao) {
 		WebElement element = driver.findElement(By.id(id));
 		Select combo = new Select(element);
 		List<WebElement> options = combo.getOptions();
@@ -151,15 +152,15 @@ public class DSL {
 	}
 
 	/********************** Frames and Windows **********************/
-	
+
 	public void enterFrame(String id) {
 		driver.switchTo().frame(id);
 	}
-	
+
 	public void exitFrame(String id) {
 		driver.switchTo().defaultContent();
 	}
-	
+
 	public void changeWindow(String id) {
 		driver.switchTo().window(id);
 	}

@@ -34,7 +34,7 @@ public class DryCodeTests {
 	@Test
 	public void textFieldInteraction() {
 		dsl.write("elementosForm:nome", "Alexandre Miranda");
-		Assert.assertEquals("Alexandre Miranda", dsl.getFieldValue("elementoForm:nome"));
+		Assert.assertEquals("Alexandre Miranda", dsl.getFieldValue("elementosForm:nome"));
 	}
 
 	@Test
@@ -58,7 +58,7 @@ public class DryCodeTests {
 	@Test
 	public void dropdownInteraction() {
 		dsl.comboSelect("elementosForm:escolaridade", "Doutorado");
-		Assert.assertEquals("Doutorado", dsl.comboCheck("elementosForm:escolaridade"));
+		Assert.assertEquals("Doutorado", dsl.getComboSelected("elementosForm:escolaridade"));
 	}
 
 	@Test
@@ -105,14 +105,12 @@ public class DryCodeTests {
 	@Test
 	public void backLink() {
 		dsl.linkClick("Voltar");
-
-		driver.findElement(By.linkText("Voltar")).click();
-		Assert.assertEquals("Voltou!", dsl.checkText("resultado"));
+		Assert.assertEquals("Voltou!", dsl.getText("resultado"));
 	}
 
 	@Test
 	public void pageTextFind() {
-		Assert.assertEquals("Campo de Treinamento", dsl.checkText(By.tagName("h3")));
-		Assert.assertEquals("Cuidado onde clica, muitas armadilhas...", dsl.checkText(By.className("facilAchar")));
+		Assert.assertEquals("Campo de Treinamento", dsl.getText(By.tagName("h3")));
+		Assert.assertEquals("Cuidado onde clica, muitas armadilhas...", dsl.getText(By.className("facilAchar")));
 	}
 }

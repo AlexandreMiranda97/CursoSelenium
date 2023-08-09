@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.After;
@@ -16,6 +17,7 @@ public class TesteCampoTreinamento {
 
 	private WebDriver driver;
 	private DSL dsl;
+	private CampoTreinamentoPage page;
 
 	@Before
 	public void start() {
@@ -24,6 +26,7 @@ public class TesteCampoTreinamento {
 		driver.manage().window().setPosition(new Point(0, 0));
 		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
 		dsl = new DSL(driver);
+		page = new CampoTreinamentoPage(driver);
 	}
 
 	@After
@@ -33,8 +36,18 @@ public class TesteCampoTreinamento {
 
 	@Test
 	public void textFieldInteraction() {
+		page.setName("Alexandre");
+		page.setSurname("Miranda da Costa");
 		dsl.write("elementosForm:nome", "Teste de escrita");
 		Assert.assertEquals("Teste de escrita", dsl.getFieldValue("elementosForm:nome"));
+	}
+	
+	@Test
+	public void doubleTextField() {
+		dsl.write("elementosForm:nome", "Alexandre");
+		Assert.assertEquals("Alexandre", dsl.getFieldValue("elementosForm:nome"));
+		dsl.write("elementosForm:nome", "Miranda");
+		Assert.assertEquals("Miranda", dsl.getFieldValue("elementosForm:nome"));
 	}
 
 	@Test
@@ -58,23 +71,27 @@ public class TesteCampoTreinamento {
 	@Test
 	public void dropdownInteraction() {
 		dsl.comboSelect("elementosForm:escolaridade", "Mestrado");
-		Assert.assertEquals("Mestrado", dsl.comboCheck("elementosForm:escolaridade"));
+		Assert.assertEquals("Mestrado", dsl.getComboSelected("elementosForm:escolaridade"));
 	}
 
 	@Test
 	public void verifyValues() {
-		Assert.assertEquals(8, dsl.comboCheckValues("elementosForm:escolaridade"));
+		Assert.assertEquals(8, dsl.getComboQuantity("elementosForm:escolaridade"));
 	}
 
 	@Test
 	public void multipleSelections() {
 		dsl.comboSelect("elementosForm:esportes", "Natacao");
 		dsl.comboSelect("elementosForm:esportes", "Corrida");
-		dsl.comboSelect("elementosForm:esportes", "Karate");
-		Assert.assertEquals(3, dsl.comboCheckValues("elementosForm:esportes"));
-
-		dsl.comboUnselect("elementosForm:esportes", "Corrida");
-		Assert.assertEquals(2, dsl.comboCheckValues("elementosForm:esportes"));
+		dsl.comboSelect("elementosForm:esportes", "O que eh esporte?");
+		
+		List<String> opcoesMarcadas = dsl.getComboValues("elementosForm:esportes");
+		Assert.assertEquals(3, opcoesMarcadas.size());
+		
+		dsl.comboUnselect("elementosForm:esportes", "O que eh esporte?");
+		opcoesMarcadas = dsl.getComboValues("elementosForm:esportes");
+		Assert.assertEquals(2, opcoesMarcadas.size());
+		Assert.assertTrue(opcoesMarcadas.containsAll(Arrays.asList("Natacao", "Corrida")));
 	}
 
 	@Test
@@ -91,19 +108,7 @@ public class TesteCampoTreinamento {
 
 	@Test
 	public void pageTextFind() {
-		WebDriver driver = new ChromeDriver();
-		driver.manage().window().setSize(new Dimension(1024, 768));
-		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
-		Assert.assertEquals("Campo de Treinamento", driver.findElement(By.tagName("h3")).getText());
-		Assert.assertEquals("Cuidado onde clica, muitas armadilhas...",
-				driver.findElement(By.className("facilAchar")).getText());
-		driver.quit();
-	}
-
-	@Test
-	public void alert() {
-		WebDriver driver = new ChromeDriver();
-		driver.manage().window().setSize(new Dimension(1024, 768));
-		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+		Assert.assertEquals("Campo de Treinamento", dsl.getText(By.tagName("h3")));
+		Assert.assertEquals("Cuidado onde clica, muitas armadilhas...", dsl.getText(By.className("facilAchar")));
 	}
 }
