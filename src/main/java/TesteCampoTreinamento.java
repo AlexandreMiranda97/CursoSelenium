@@ -1,9 +1,12 @@
 import java.util.List;
 
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -11,126 +14,79 @@ import org.openqa.selenium.support.ui.Select;
 
 public class TesteCampoTreinamento {
 
+	private WebDriver driver;
+	private DSL dsl;
+
+	@Before
+	public void start() {
+		driver = new ChromeDriver();
+		driver.manage().window().setSize(new Dimension(1024, 768));
+		driver.manage().window().setPosition(new Point(0, 0));
+		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+		dsl = new DSL(driver);
+	}
+
+	@After
+	public void finish() {
+		driver.quit();
+	}
+
 	@Test
 	public void textFieldInteraction() {
-		WebDriver driver = new ChromeDriver();
-		driver.manage().window().setSize(new Dimension(1024, 768));
-		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
-		driver.findElement(By.id("elementosForm:nome")).sendKeys("Teste de escrita");
-		Assert.assertEquals("Teste de escrita", driver.findElement(By.id("elementosForm:nome")).getAttribute("value"));
-
-		driver.quit();
+		dsl.write("elementosForm:nome", "Teste de escrita");
+		Assert.assertEquals("Teste de escrita", dsl.getFieldValue("elementosForm:nome"));
 	}
 
 	@Test
 	public void textAreaInteraction() {
-		WebDriver driver = new ChromeDriver();
-		driver.manage().window().setSize(new Dimension(1024, 768));
-		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
-		driver.findElement(By.id("elementosForm:sugestoes")).sendKeys("teste\n\n\n\nultima linha");
-		Assert.assertEquals("teste\n\n\n\nultima linha",
-				driver.findElement(By.id("elementosForm:sugestoes")).getAttribute("value"));
-
-		driver.quit();
+		dsl.write("elementosForm:sugestoes", "teste\n\n\n\nultima linha");
+		Assert.assertEquals("teste\n\n\n\nultima linha", dsl.getFieldValue("elementosForm:sugestoes"));
 	}
 
 	@Test
 	public void radioButtonInteraction() {
-		WebDriver driver = new ChromeDriver();
-		driver.manage().window().setSize(new Dimension(1024, 768));
-		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
-		driver.findElement(By.id("elementosForm:sexo:0")).click();
-		Assert.assertTrue(driver.findElement(By.id("elementosForm:sexo:0")).isSelected());
-
-		driver.quit();
+		dsl.radioClick("elementosForm:sexo:0");
+		Assert.assertTrue(dsl.radioCheck("elementosForm:sexo:0"));
 	}
 
 	@Test
 	public void checkBoxInteraction() {
-		WebDriver driver = new ChromeDriver();
-		driver.manage().window().setSize(new Dimension(1024, 768));
-		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
-		driver.findElement(By.id("elementosForm:comidaFavorita:2")).click();
-		Assert.assertTrue(driver.findElement(By.id("elementosForm:comidaFavorita:2")).isSelected());
-
-		driver.quit();
+		dsl.radioClick("elementosForm:comidaFavorita:2");
+		Assert.assertTrue(dsl.radioCheck("elementosForm:comidaFavorita:2"));
 	}
 
 	@Test
 	public void dropdownInteraction() {
-		WebDriver driver = new ChromeDriver();
-		driver.manage().window().setSize(new Dimension(1024, 768));
-		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
-		WebElement element = driver.findElement(By.id("elementosForm:escolaridade"));
-		Select combo = new Select(element);
-//		combo.selectByIndex(2);
-//		combo.selectByValue("superior");
-		combo.selectByVisibleText("Doutorado");
-
-		Assert.assertEquals("Doutorado", combo.getFirstSelectedOption().getText());
-		driver.quit();
+		dsl.comboSelect("elementosForm:escolaridade", "Mestrado");
+		Assert.assertEquals("Mestrado", dsl.comboCheck("elementosForm:escolaridade"));
 	}
 
 	@Test
 	public void verifyValues() {
-		WebDriver driver = new ChromeDriver();
-		driver.manage().window().setSize(new Dimension(1024, 768));
-		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
-		WebElement element = driver.findElement(By.id("elementosForm:escolaridade"));
-		Select combo = new Select(element);
-		List<WebElement> options = combo.getOptions();
-		Assert.assertEquals(8, options.size());
-
-		boolean encontrou = false;
-		for (WebElement option : options) {
-			if (option.getText().equals("Mestrado")) {
-				encontrou = true;
-				break;
-			}
-		}
-		Assert.assertTrue(encontrou);
-		driver.quit();
+		Assert.assertEquals(8, dsl.comboCheckValues("elementosForm:escolaridade"));
 	}
 
 	@Test
 	public void multipleSelections() {
-		WebDriver driver = new ChromeDriver();
-		driver.manage().window().setSize(new Dimension(1024, 768));
-		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
-		WebElement element = driver.findElement(By.id("elementosForm:esportes"));
-		Select combo = new Select(element);
-		combo.selectByVisibleText("Natacao");
-		combo.selectByVisibleText("Corrida");
-		combo.selectByVisibleText("Karate");
+		dsl.comboSelect("elementosForm:esportes", "Natacao");
+		dsl.comboSelect("elementosForm:esportes", "Corrida");
+		dsl.comboSelect("elementosForm:esportes", "Karate");
+		Assert.assertEquals(3, dsl.comboCheckValues("elementosForm:esportes"));
 
-		List<WebElement> allSelectedOptions = combo.getAllSelectedOptions();
-		Assert.assertEquals(3, allSelectedOptions.size());
-
-		combo.deselectByVisibleText("Corrida");
-		allSelectedOptions = combo.getAllSelectedOptions();
-		Assert.assertEquals(2, allSelectedOptions.size());
-		driver.quit();
+		dsl.comboUnselect("elementosForm:esportes", "Corrida");
+		Assert.assertEquals(2, dsl.comboCheckValues("elementosForm:esportes"));
 	}
 
 	@Test
 	public void buttonInteraction() {
-		WebDriver driver = new ChromeDriver();
-		driver.manage().window().setSize(new Dimension(1024, 768));
-		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
-		WebElement button = driver.findElement(By.id("buttonSimple"));
-		button.click();
-		Assert.assertEquals("Obrigado!", button.getAttribute("value"));
-		driver.quit();
+		dsl.buttonClick("buttonSimple");
+		Assert.assertEquals("Obrigado!", dsl.getElementValue("buttonSimple"));
 	}
 
 	@Test
 	public void backLink() {
-		WebDriver driver = new ChromeDriver();
-		driver.manage().window().setSize(new Dimension(1024, 768));
-		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
-		driver.findElement(By.linkText("Voltar")).click();
-		Assert.assertEquals("Voltou!", driver.findElement(By.id("resultado")).getText());
-		driver.quit();
+		dsl.linkClick("Voltar");
+		Assert.assertEquals("Voltou!", dsl.getText("resultado"));
 	}
 
 	@Test
