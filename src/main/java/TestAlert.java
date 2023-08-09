@@ -1,6 +1,8 @@
 import java.util.List;
 
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
@@ -13,6 +15,21 @@ import org.openqa.selenium.support.ui.Select;
 
 public class TestAlert {
 
+	private WebDriver driver;
+
+	@Before
+	public void start() {
+		driver = new ChromeDriver();
+		driver.manage().window().setSize(new Dimension(1024, 768));
+		driver.manage().window().setPosition(new Point(0, 0));
+		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+	}
+
+	@After
+	public void finish() {
+		driver.quit();
+	}
+	
 	@Test
 	public void simpleAlertInteract() {
 		WebDriver driver = new ChromeDriver();
