@@ -1,5 +1,6 @@
 import java.util.List;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,6 +23,11 @@ public class DryCodeTests {
 		driver.manage().window().setPosition(new Point(0, 0));
 		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
 	}
+	
+	@After
+	public void finish() {
+		driver.quit();
+	}
 
 	@Test
 	public void textFieldInteraction() {
@@ -32,7 +38,8 @@ public class DryCodeTests {
 	@Test
 	public void textAreaInteraction() {
 		driver.findElement(By.id("elementosForm:sugestoes")).sendKeys("teste\n\n\n\nultima linha");
-		Assert.assertEquals("teste\n\n\n\nultima linha", driver.findElement(By.id("elementosForm:sugestoes")).getAttribute("value"));
+		Assert.assertEquals("teste\n\n\n\nultima linha",
+				driver.findElement(By.id("elementosForm:sugestoes")).getAttribute("value"));
 	}
 
 	@Test
