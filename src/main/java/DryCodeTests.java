@@ -33,13 +33,13 @@ public class DryCodeTests {
 
     @Test
     public void textFieldInteraction() {
-        dsl.write("elementosForm:nome", "Alexandre Miranda");
+        dsl.escreve("elementosForm:nome", "Alexandre Miranda");
         Assert.assertEquals("Alexandre Miranda", dsl.getFieldValue("elementosForm:nome"));
     }
 
     @Test
     public void textAreaInteraction() {
-        dsl.write("elementosForm:sugestoes", "teste\n\n\n\nultima linha");
+        dsl.escreve("elementosForm:sugestoes", "teste\n\n\n\nultima linha");
         Assert.assertEquals("teste\n\n\n\nultima linha", dsl.getFieldValue("elementosForm:sugestoes"));
     }
 
@@ -57,8 +57,8 @@ public class DryCodeTests {
 
     @Test
     public void dropdownInteraction() {
-        dsl.comboSelect("elementosForm:escolaridade", "Doutorado");
-        Assert.assertEquals("Doutorado", dsl.getComboSelected("elementosForm:escolaridade"));
+        dsl.selectCombo("elementosForm:escolaridade", "Doutorado");
+        Assert.assertEquals("Doutorado", dsl.retornaValorCombo("elementosForm:escolaridade"));
     }
 
     @Test
@@ -80,9 +80,9 @@ public class DryCodeTests {
 
     @Test
     public void multipleSelections() {
-        dsl.comboSelect("elementosForm:esportes", "Natacao");
-        dsl.comboSelect("elementosForm:esportes", "Corrida");
-        dsl.comboSelect("elementosForm:esportes", "Karate");
+        dsl.selectCombo("elementosForm:esportes", "Natacao");
+        dsl.selectCombo("elementosForm:esportes", "Corrida");
+        dsl.selectCombo("elementosForm:esportes", "Karate");
 
         WebElement element = driver.findElement(By.id("elementosForm:esportes"));
         Select combo = new Select(element);
@@ -96,7 +96,7 @@ public class DryCodeTests {
 
     @Test
     public void buttonInteraction() {
-        dsl.buttonClick("buttonSimple");
+        dsl.clicarBotao("buttonSimple");
 
         WebElement button = driver.findElement(By.id("buttonSimple"));
         Assert.assertEquals("Obrigado!", button.getAttribute("value"));
@@ -104,13 +104,13 @@ public class DryCodeTests {
 
     @Test
     public void backLink() {
-        dsl.linkClick("Voltar");
-        Assert.assertEquals("Voltou!", dsl.getText("resultado"));
+        dsl.clicarLink("Voltar");
+        Assert.assertEquals("Voltou!", dsl.obterTexto("resultado"));
     }
 
     @Test
     public void pageTextFind() {
-        Assert.assertEquals("Campo de Treinamento", dsl.getText(By.tagName("h3")));
-        Assert.assertEquals("Cuidado onde clica, muitas armadilhas...", dsl.getText(By.className("facilAchar")));
+        Assert.assertEquals("Campo de Treinamento", dsl.obterTexto(By.tagName("h3")));
+        Assert.assertEquals("Cuidado onde clica, muitas armadilhas...", dsl.obterTexto(By.className("facilAchar")));
     }
 }

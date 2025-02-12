@@ -16,12 +16,12 @@ public class FormRegister {
 	
 	@Before
 	public void start() {
-			driver = new ChromeDriver();
-			driver.manage().window().setSize(new Dimension(1024, 768));
-			driver.manage().window().setPosition(new Point(0, 0));
-			driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
-			dsl = new DSL(driver);
-			page = new CampoTreinamentoPage(driver);
+		driver = new ChromeDriver();
+		driver.manage().window().setSize(new Dimension(1024, 768));
+		driver.manage().window().setPosition(new Point(0, 0));
+		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+		dsl = new DSL(driver);
+		page = new CampoTreinamentoPage(driver);
 	}
 
 	@After
@@ -39,15 +39,15 @@ public class FormRegister {
 		page.setSport("Natacao");
 		page.register();
 
-		dsl.buttonClick("elementosForm:cadastrar");
+		dsl.clicarBotao("elementosForm:cadastrar");
 
 		Assert.assertTrue(page.getRegResult().startsWith("Cadastrado!"));
 		Assert.assertTrue(page.getRegName().endsWith("Alexandre"));
 		Assert.assertEquals("Sobrenome: Miranda da Costa", page.getRegSurname());
 		Assert.assertEquals("Sexo: Masculino", page.getRegGender());
-		Assert.assertEquals("Comida: Pizza", dsl.getText("descComida"));
-		Assert.assertEquals("Escolaridade: doutorado", dsl.getText("descEscolaridade"));
-		Assert.assertEquals("Esportes: Natacao", dsl.getText("descEsportes"));
-		Assert.assertEquals("Sugestoes: Lorem Ipsum Lorem Ipsum Lorem Ipsum", dsl.getText("descSugestoes"));
+		Assert.assertEquals("Comida: Pizza", dsl.obterTexto("descComida"));
+		Assert.assertEquals("Escolaridade: doutorado", dsl.obterTexto("descEscolaridade"));
+		Assert.assertEquals("Esportes: Natacao", dsl.obterTexto("descEsportes"));
+		Assert.assertEquals("Sugestoes: Lorem Ipsum Lorem Ipsum Lorem Ipsum", dsl.obterTexto("descSugestoes"));
 	}
 }

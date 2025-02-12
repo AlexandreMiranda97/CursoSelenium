@@ -41,12 +41,12 @@ public class CampoTreinamentoPage {
     }
 
     public void register() {
-		dsl.clicarBotao("elementosForm:cadastrar");
+        dsl.clicarBotao("elementosForm:cadastrar");
     }
 
     public String getRegResult() {
-		return dsl.obterTexto("resultado");
-	}
+        return dsl.obterTexto("resultado");
+    }
 
     public String getRegName() {
         return dsl.obterTexto("descNome");
