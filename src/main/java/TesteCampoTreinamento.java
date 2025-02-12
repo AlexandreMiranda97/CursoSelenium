@@ -37,8 +37,8 @@ public class TesteCampoTreinamento {
 
 	@Test
 	public void testeTextField() {
-		page.setName("Alexandre");
-		page.setSurname("Miranda da Costa");
+		page.setNome("Alexandre");
+		page.setSobrenome("Miranda da Costa");
 		dsl.escreve("elementosForm:nome", "Teste de escrita");
 		Assert.assertEquals("Teste de escrita", dsl.getFieldValue("elementosForm:nome"));
 	}
