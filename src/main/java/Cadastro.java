@@ -6,11 +6,11 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 public class Cadastro {
-	
+
 	private WebDriver driver;
 	private DSL dsl;
 	private CampoTreinamentoPage page;
-	
+
 	@Before
 	public void start() {
 		driver = new ChromeDriver();
@@ -25,7 +25,7 @@ public class Cadastro {
 	public void finish() {
 		driver.quit();
 	}
-	
+
 	@Test
 	public void cadastroComSucesso() {
 		page.setNome("Alexandre");
@@ -48,5 +48,11 @@ public class Cadastro {
 		Assert.assertEquals("Escolaridade: doutorado", page.getRegGraduacao());
 		Assert.assertEquals("Esportes: Natacao", dsl.obterTexto("descEsportes"));
 		Assert.assertEquals("Sugestoes: Lorem Ipsum Lorem Ipsum Lorem Ipsum", page.getRegSugestao());
+	}
+
+	@Test
+	public void cadastroComErro() {
+		page.registrar();
+		Assert.assertTrue(page.getRegResult().startsWith("Erro!"));
 	}
 }

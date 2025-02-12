@@ -1,8 +1,13 @@
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+import java.lang.reflect.Array;
+import java.util.List;
 
 public class CampoTreinamentoPage {
 
+    private WebDriver driver;
     private DSL dsl;
 
     public CampoTreinamentoPage(WebDriver driver) {

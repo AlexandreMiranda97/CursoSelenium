@@ -13,6 +13,8 @@ import org.openqa.selenium.support.ui.Select;
 public class TestAlert {
 
 	private WebDriver driver;
+	private DSL dsl;
+	private TestAlertPage page;
 
 	@Before
 	public void start() {
@@ -29,10 +31,11 @@ public class TestAlert {
 
 	@Test
 	public void simpleAlertInteract() {
+		page.clickAlertButton();
 		driver.findElement(By.id("alert")).click();
 		Alert alert = driver.switchTo().alert();
 		String alertText = alert.getText();
-		Assert.assertEquals("Alert Simples", alert.getText());
+		Assert.assertEquals("Alert Simples", page.getAlertText());
 		alert.accept();
 		driver.findElement(By.id("elementosForm:nome")).sendKeys(alertText);
 	}
