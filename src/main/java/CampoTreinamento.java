@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.util.List;
 
 import org.junit.After;
@@ -13,7 +12,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
 
-public class TesteCampoTreinamento {
+public class CampoTreinamento {
 
 	private WebDriver driver;
 	private DSL dsl;
@@ -39,7 +38,6 @@ public class TesteCampoTreinamento {
 	public void testeTextField() {
 		page.setNome("Alexandre");
 		page.setSobrenome("Miranda da Costa");
-		dsl.escreve("elementosForm:nome", "Teste de escrita");
 		Assert.assertEquals("Teste de escrita", dsl.getFieldValue("elementosForm:nome"));
 	}
 	

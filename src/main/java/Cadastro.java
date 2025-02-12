@@ -4,9 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeDriverService;
 
-public class TesteCadastro {
+public class Cadastro {
 	
 	private WebDriver driver;
 	private DSL dsl;
