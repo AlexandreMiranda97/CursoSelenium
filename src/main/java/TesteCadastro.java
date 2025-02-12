@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeDriverService;
 
 public class TesteCadastro {
 	
@@ -31,9 +32,11 @@ public class TesteCadastro {
 		page.setNome("Alexandre");
 		page.setSobrenome("Miranda da Costa");
 		page.setMasculino();
-		page.setComidaPizza();
+		page.setComdidaFavorita("Carne");
+		page.setComdidaFavorita("Pizza");
 		page.setGraduacao("Doutorado");
 		page.setEsporte("Natacao");
+		page.setSugestao("Lorem Ipsum Lorem Ipsum Lorem Ipsum");
 		page.registrar();
 
 		dsl.clicarBotao("elementosForm:cadastrar");
@@ -42,7 +45,7 @@ public class TesteCadastro {
 		Assert.assertTrue(page.getRegNome().endsWith("Alexandre"));
 		Assert.assertEquals("Sobrenome: Miranda da Costa", page.getRegSobrenome());
 		Assert.assertEquals("Sexo: Masculino", page.getRegGenero());
-		Assert.assertEquals("Comida: Pizza", page.getRegComida());
+		Assert.assertEquals("Comida: Carne Pizza", page.getRegComida());
 		Assert.assertEquals("Escolaridade: doutorado", page.getRegGraduacao());
 		Assert.assertEquals("Esportes: Natacao", dsl.obterTexto("descEsportes"));
 		Assert.assertEquals("Sugestoes: Lorem Ipsum Lorem Ipsum Lorem Ipsum", page.getRegSugestao());

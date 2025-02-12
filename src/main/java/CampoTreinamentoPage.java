@@ -1,3 +1,4 @@
+import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import org.openqa.selenium.WebDriver;
 
 public class CampoTreinamentoPage {
@@ -24,8 +25,20 @@ public class CampoTreinamentoPage {
         dsl.radioClick("elementosForm:sexo:1");
     }
 
-    public void setComidaPizza() {
-        dsl.radioClick("elementosForm:comidaFavorita:2");
+    public void setComdidaFavorita(String comida) {
+        dsl.radioClick("elementosForm:comidaFavorita:3");
+        if (comida == "Carne") {
+            dsl.radioClick("elementosForm:comidaFavorita:0");
+        }
+        if (comida == "Frango") {
+            dsl.radioClick("elementosForm:comidaFavorita:1");
+        }
+        if (comida == "Pizza") {
+            dsl.radioClick("elementosForm:comidaFavorita:2");
+        }
+        if (comida == "Vegetariano") {
+            dsl.radioClick("elementosForm:comidaFavorita:3");
+        }
     }
 
     public void setGraduacao(String value) {
