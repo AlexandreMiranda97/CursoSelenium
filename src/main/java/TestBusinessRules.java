@@ -16,11 +16,11 @@ public class TestBusinessRules {
 	
 	@Before
 	public void start() {
-			driver = new ChromeDriver();
-			driver.manage().window().setSize(new Dimension(1024, 768));
-			driver.manage().window().setPosition(new Point(0, 0));
-			driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
-			dsl = new DSL(driver);
+		driver = new ChromeDriver();
+		driver.manage().window().setSize(new Dimension(1024, 768));
+		driver.manage().window().setPosition(new Point(0, 0));
+		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+		dsl = new DSL(driver);
 	}
 
 	@After
@@ -30,7 +30,7 @@ public class TestBusinessRules {
 	
 	@Test
 	public void nameMandatory() {
-		dsl.buttonClick("elementosForm:cadastrar");
+		dsl.clicarBotao("elementosForm:cadastrar");
 		driver.findElement(By.id("elementosForm:cadastrar")).click();
 		Alert alert = driver.switchTo().alert();
 		Assert.assertEquals("Nome eh obrigatorio", alert.getText());
@@ -71,13 +71,13 @@ public class TestBusinessRules {
 	
 	@Test
 	public void ambiguousSport() {
-		dsl.write("elementosForm:nome", "Alexandre");
-		dsl.write("elementosForm:sobrenome", "Miranda da Costa");
-		dsl.buttonClick("elementosForm:sexo:0");
-		dsl.buttonClick("elementosForm:comidaFavorita:0");
-		dsl.comboSelect("elementosForm:esportes", "Natacao");
-		dsl.comboSelect("elementosForm:esportes", "O que eh esporte?");
-		dsl.buttonClick("elementosForm:cadastrar");
+		dsl.escreve("elementosForm:nome", "Alexandre");
+		dsl.escreve("elementosForm:sobrenome", "Miranda da Costa");
+		dsl.clicarBotao("elementosForm:sexo:0");
+		dsl.clicarBotao("elementosForm:comidaFavorita:0");
+		dsl.selectCombo("elementosForm:esportes", "Natacao");
+		dsl.selectCombo("elementosForm:esportes", "O que eh esporte?");
+		dsl.clicarBotao("elementosForm:cadastrar");
 		Alert alert = driver.switchTo().alert();
 		Assert.assertEquals("Voce faz esporte ou nao?", alert.getText());
 		alert.accept();

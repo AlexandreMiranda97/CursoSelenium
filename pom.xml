@@ -3,8 +3,12 @@
   <groupId>br.ce.wcaquino</groupId>
   <artifactId>CursoSelenium</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  
-  <dependencies>
+    <packaging>pom</packaging>
+    <modules>
+        <module>src</module>
+    </modules>
+
+    <dependencies>
 	  <dependency>
 		  <groupId>org.seleniumhq.selenium</groupId>
 		  <artifactId>selenium-java</artifactId>
